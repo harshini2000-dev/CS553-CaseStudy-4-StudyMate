@@ -4,6 +4,7 @@ import gradio as gr
 from huggingface_hub import InferenceClient
 
 # Remote model only app.py
+# removed local model for case study 4
 # ============================================================
 # CONFIGURATION
 # ============================================================
