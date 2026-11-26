@@ -1,0 +1,29 @@
+name: Deploy to Cloud Run
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: projects/972870484035/locations/global/workloadIdentityPools/github-pool/providers/github-provider
+          service_account: github-deploy@studymate-515801.iam.gserviceaccount.com
+
+      - uses: google-github-actions/deploy-cloudrun@v2
+        with:
+          service: studymate
+          region: us-east4
+          source: .
+          secrets: HF_TOKEN=hf-token:latest
+          flags: --allow-unauthenticated --memory=1Gi --min-instances=0 --max-instances=2
